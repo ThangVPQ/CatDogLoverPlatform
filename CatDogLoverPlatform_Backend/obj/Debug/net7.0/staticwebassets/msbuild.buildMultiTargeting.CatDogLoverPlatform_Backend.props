@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/CatDogLoverPlatform_Backend.props" />
+</Project>

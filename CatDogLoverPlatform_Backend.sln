@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1705.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatDogLoverPlatform_Backend", "CatDogLoverPlatform_Backend\CatDogLoverPlatform_Backend.csproj", "{7418400D-75FD-4A5F-98D0-7F74FFA9815F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatDogLover_Repository", "CatDogLover_Repository\CatDogLover_Repository.csproj", "{AB958C6C-76F1-4FC9-BE70-C412A4D8BB36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7418400D-75FD-4A5F-98D0-7F74FFA9815F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7418400D-75FD-4A5F-98D0-7F74FFA9815F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7418400D-75FD-4A5F-98D0-7F74FFA9815F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7418400D-75FD-4A5F-98D0-7F74FFA9815F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB958C6C-76F1-4FC9-BE70-C412A4D8BB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB958C6C-76F1-4FC9-BE70-C412A4D8BB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB958C6C-76F1-4FC9-BE70-C412A4D8BB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB958C6C-76F1-4FC9-BE70-C412A4D8BB36}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0AECC27B-1679-4A3E-9CE1-9E4F5773F8EA}
+	EndGlobalSection
+EndGlobal
