@@ -1,34 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend.csproj": {}
+    "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLoverPlatform_Backend\\CatDogLoverPlatform_Backend.csproj": {}
   },
   "projects": {
-    "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend.csproj": {
+    "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLoverPlatform_Backend\\CatDogLoverPlatform_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLoverPlatform_Backend\\CatDogLoverPlatform_Backend.csproj",
         "projectName": "CatDogLoverPlatform_Backend",
-        "projectPath": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend.csproj",
-        "packagesPath": "/Users/quocthang/.nuget/packages/",
-        "outputPath": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLoverPlatform_Backend/obj/",
+        "projectPath": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLoverPlatform_Backend\\CatDogLoverPlatform_Backend.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLoverPlatform_Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/quocthang/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/sdk/7.0.304/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/CatDogLover_Repository.csproj": {
-                "projectPath": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/CatDogLover_Repository.csproj"
+              "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\CatDogLover_Repository.csproj": {
+                "projectPath": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\CatDogLover_Repository.csproj"
               }
             }
           }
@@ -71,26 +73,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/CatDogLover_Repository.csproj": {
+    "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\CatDogLover_Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/CatDogLover_Repository.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\CatDogLover_Repository.csproj",
         "projectName": "CatDogLover_Repository",
-        "projectPath": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/CatDogLover_Repository.csproj",
-        "packagesPath": "/Users/quocthang/.nuget/packages/",
-        "outputPath": "/Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/obj/",
+        "projectPath": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\CatDogLover_Repository.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Desktop\\SWP\\CatDogLoverPlatform\\CatDogLover_Repository\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/quocthang/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -152,7 +156,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

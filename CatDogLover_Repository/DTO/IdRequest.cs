@@ -3,7 +3,7 @@ namespace CatDogLover_Repository.DTO
 {
 	public class IdRequest
 	{
-		public Guid Id;
+		public Guid Id { get; set; }
 	}
 }
 

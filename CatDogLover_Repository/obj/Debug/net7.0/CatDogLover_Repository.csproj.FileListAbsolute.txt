@@ -12,3 +12,17 @@
 /Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/obj/Debug/net7.0/CatDogLover_Repository.pdb
 /Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/obj/Debug/net7.0/CatDogLover_Repository.genruntimeconfig.cache
 /Users/quocthang/Projects/CatDogLoverPlatform_Backend/CatDogLover_Repository/obj/Debug/net7.0/ref/CatDogLover_Repository.dll
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\bin\Debug\net7.0\CatDogLover_Repository.deps.json
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\bin\Debug\net7.0\CatDogLover_Repository.runtimeconfig.json
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\bin\Debug\net7.0\CatDogLover_Repository.dll
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\bin\Debug\net7.0\CatDogLover_Repository.pdb
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.csproj.AssemblyReference.cache
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.AssemblyInfoInputs.cache
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.AssemblyInfo.cs
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.csproj.CoreCompileInputs.cache
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.dll
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\refint\CatDogLover_Repository.dll
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.pdb
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\CatDogLover_Repository.genruntimeconfig.cache
+C:\Users\admin\Desktop\SWP\CatDogLoverPlatform\CatDogLover_Repository\obj\Debug\net7.0\ref\CatDogLover_Repository.dll

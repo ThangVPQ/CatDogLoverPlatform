@@ -144,6 +144,26 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost]
+        [Route("get-all-user")]
+        public async Task<IActionResult> GetAllUser([FromBody] PaginateRequest paginateRequest)
+        {
+            try
+            {
+                List<User> users = _dBContext.Users.Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                return Ok(new PaginatedData<User>
+                {
+                    Data = users,
+                    CurrentPage = paginateRequest.CurrentPage,
+                    TotalPages = _dBContext.Users.Count(),
+                    PageSize = paginateRequest.PageSize
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
 

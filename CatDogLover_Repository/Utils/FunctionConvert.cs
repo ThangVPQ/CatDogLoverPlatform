@@ -45,7 +45,8 @@ namespace CatDogLover_Repository.Utils
         #region Convert Milisecond to DateTime
         public static DateTime ConvertMilisecondToDateTime(long? dateTimeLong)
         {
-            return DateTimeOffset.FromUnixTimeSeconds((long)dateTimeLong).DateTime;
+            DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds((long)dateTimeLong).DateTime;
+            return dateTime;
         }
         #endregion
         public static string HashPassword(string password)
