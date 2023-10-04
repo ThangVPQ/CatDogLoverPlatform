@@ -11,7 +11,5 @@ namespace CatDogLover_Repository.DTO
     {
         public Guid ImageID { get; set; }
         public byte[] SourceImage { get; set; }
-        public long? InsertDated { get; set; }
-        public long? UpdateDated { get; set; }
     }
 }

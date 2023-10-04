@@ -12,7 +12,7 @@ namespace CatDogLover_Repository.DTO
         public string PhoneNumber { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public long BirthDate { get; set; }
+        public long BirthDated { get; set; }
     }
 }
 

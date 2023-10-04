@@ -29,22 +29,21 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InsertDate")
+                    b.Property<DateTime?>("InsertDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("NewsFeedID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UpdateBy")
+                    b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserID")
@@ -65,17 +64,16 @@ namespace CatDogLoverRepository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("InsertDate")
+                    b.Property<DateTime?>("InsertDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("NewsFeedID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("SourceImage")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ImageID");
@@ -92,40 +90,39 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InsertDate")
+                    b.Property<DateTime?>("InsertDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TypeGoodsID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UpdateBy")
+                    b.Property<Guid>("TypeNewsFeedID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<Guid?>("UpdateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserID")
@@ -134,6 +131,8 @@ namespace CatDogLoverRepository.Migrations
                     b.HasKey("NewsFeedID");
 
                     b.HasIndex("TypeGoodsID");
+
+                    b.HasIndex("TypeNewsFeedID");
 
                     b.HasIndex("UserID");
 
@@ -171,7 +170,6 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RoleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoleID");
@@ -186,12 +184,25 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TypeGoodsName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TypeGoodsID");
 
                     b.ToTable("TypeGoods");
+                });
+
+            modelBuilder.Entity("CatDogLover_Repository.DAO.TypeNewsFeed", b =>
+                {
+                    b.Property<Guid>("TypesNewFeedID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TypesNewFeedName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TypesNewFeedID");
+
+                    b.ToTable("TypeNewsFeeds");
                 });
 
             modelBuilder.Entity("CatDogLover_Repository.DAO.User", b =>
@@ -201,56 +212,48 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InsertDate")
+                    b.Property<DateTime?>("InsertDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LogOutDate")
+                    b.Property<DateTime?>("LogOutDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Otp")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateBy")
+                    b.Property<DateTime?>("UpdateBy")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserID");
@@ -298,6 +301,12 @@ namespace CatDogLoverRepository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CatDogLover_Repository.DAO.TypeNewsFeed", "TypeNewsFeed")
+                        .WithMany("NewsFeeds")
+                        .HasForeignKey("TypeNewsFeedID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CatDogLover_Repository.DAO.User", "User")
                         .WithMany("NewsFeeds")
                         .HasForeignKey("UserID")
@@ -305,6 +314,8 @@ namespace CatDogLoverRepository.Migrations
                         .IsRequired();
 
                     b.Navigation("TypeGoods");
+
+                    b.Navigation("TypeNewsFeed");
 
                     b.Navigation("User");
                 });
@@ -354,6 +365,11 @@ namespace CatDogLoverRepository.Migrations
                 });
 
             modelBuilder.Entity("CatDogLover_Repository.DAO.TypeGoods", b =>
+                {
+                    b.Navigation("NewsFeeds");
+                });
+
+            modelBuilder.Entity("CatDogLover_Repository.DAO.TypeNewsFeed", b =>
                 {
                     b.Navigation("NewsFeeds");
                 });

@@ -7,6 +7,7 @@ using CatDogLover_Repository.DTO;
 using CatDogLover_Repository.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +32,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 if(checkUser == null)
                 {
                     User newUser = FunctionConvert.ConvertObjectToObject<User, RegisterRequest>(registerRequest);
-                    newUser.BirthDate = FunctionConvert.ConvertMilisecondToDateTime(registerRequest.BirthDate);
+                    newUser.BirthDate = FunctionConvert.ConvertMilisecondToDateTime(registerRequest.BirthDated);
                     newUser.Password = FunctionConvert.HashPassword(registerRequest.Password);
                     newUser.InsertDate = DateTime.Now;
                     newUser.Status = 2;
@@ -48,7 +49,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
         [HttpPost]
@@ -162,6 +163,36 @@ namespace CatDogLoverPlatform_Backend.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+        [HttpPost]
+        [Route("update-user")]
+        public async Task<IActionResult> Register([FromBody] UserUpdate userUpdate)
+        {
+            try
+            {
+                User checkUser = _dBContext.Users.Where(t => t.UserID.Equals(userUpdate.UserID)).FirstOrDefault();
+                if (checkUser != null)
+                {
+                    checkUser.BirthDate = userUpdate.BirthDate.HasValue? FunctionConvert.ConvertMilisecondToDateTime(userUpdate.BirthDate) : checkUser.BirthDate;
+                    checkUser.FullName = userUpdate.FullName.IsNullOrEmpty() ? checkUser.FullName : userUpdate.FullName;
+                    checkUser.FirstName = userUpdate.FirstName.IsNullOrEmpty() ? checkUser.FirstName : userUpdate.FirstName;
+                    checkUser.PhoneNumber = userUpdate.PhoneNumber.IsNullOrEmpty() ? checkUser.PhoneNumber : userUpdate.PhoneNumber;
+                    checkUser.LastName = userUpdate.LastName.IsNullOrEmpty() ? checkUser.LastName : userUpdate.LastName;
+                    checkUser.Address = userUpdate.Address.IsNullOrEmpty() ? checkUser.Address : userUpdate.Address;
+                    _dBContext.Users.Update(checkUser);
+                    _dBContext.SaveChanges();
+                    return Ok("Update Account Success");
+                }
+                else
+                {
+                    return BadRequest("Update Acount unsuceess");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
             }
         }
     }

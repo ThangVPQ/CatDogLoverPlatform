@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CatDogLover_Repository.DAO
 {
-	public class CatDogLoverDBContext : DbContext
+    public class CatDogLoverDBContext : DbContext
     {
         public CatDogLoverDBContext()
         {
@@ -22,6 +22,7 @@ namespace CatDogLover_Repository.DAO
         public DbSet<Comment> Comments { get; set; }
         public DbSet<NumberOfInteraction> NumberOfInteractions { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<TypeNewsFeed> TypeNewsFeeds { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //if (!optionsBuilder.IsConfigured)
@@ -34,7 +35,7 @@ namespace CatDogLover_Repository.DAO
             //    optionsBuilder.UseSqlServer(connectionString);
             //}
             //base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("workstation id=CatDogLoverDB.mssql.somee.com;packet size=4096;user id=Thangvpq_SQLLogin_1;pwd=qwgw5z5vr3;data source=CatDogLoverDB.mssql.somee.com;persist security info=False;initial catalog=CatDogLoverDB; TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("Data Source=SQL8002.site4now.net;Initial Catalog=db_a9f782_catdogloverdb;User Id=db_a9f782_catdogloverdb_admin;Password=thang123");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,7 +73,10 @@ namespace CatDogLover_Repository.DAO
            .HasOne(e => e.NewsFeed)
            .WithMany(d => d.Images)
            .HasForeignKey(e => e.NewsFeedID);
-
+            modelBuilder.Entity<NewsFeed>()
+               .HasOne(e => e.TypeNewsFeed)
+               .WithMany(d => d.NewsFeeds)
+               .HasForeignKey(e => e.TypeNewsFeedID);
             base.OnModelCreating(modelBuilder);
         }
     }

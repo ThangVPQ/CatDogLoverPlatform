@@ -9,15 +9,34 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSession();
+builder.Services.AddDataProtection();
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddDbContext<CatDogLoverDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000/", "https://thang-swp.vercel.app/");
+            policy.WithMethods();
+            policy.WithHeaders("Content-Type", "Access-Control-Allow-Headers");
+        });
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseCors(MyAllowSpecificOrigins);
+
+app.UseSession();
+
+app.UseSwagger();
+
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pet Land API v1");
+});
 
 app.UseHttpsRedirection();
 
