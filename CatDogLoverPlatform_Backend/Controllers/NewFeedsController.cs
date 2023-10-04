@@ -63,7 +63,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
             {
                 NewsFeed newsFeed = FunctionConvert.ConvertObjectToObject<NewsFeed, NewsFeedForSaleRequest>(newFeedRequest);
                 newsFeed.InsertDate = DateTime.Now;
-                newsFeed.BirthDate = FunctionConvert.ConvertMilisecondToDateTime(newFeedRequest.BirthDate);
+                newsFeed.BirthDate = FunctionConvert.ConvertMilisecondToDateTime((long)newFeedRequest.BirthDate);
                 newsFeed.Status = 1;
                 _dBContext.NewsFeeds.Add(newsFeed);
                 _dBContext.SaveChanges();

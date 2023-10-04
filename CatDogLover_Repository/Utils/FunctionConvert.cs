@@ -43,9 +43,11 @@ namespace CatDogLover_Repository.Utils
         #endregion
 
         #region Convert Milisecond to DateTime
-        public static DateTime ConvertMilisecondToDateTime(long? dateTimeLong)
+        public static DateTime ConvertMilisecondToDateTime(long dateTimeLong)
         {
-            DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds((long)dateTimeLong).DateTime;
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(dateTimeLong);
+            DateTime dateTime = dateTimeOffset.UtcDateTime;
+
             return dateTime;
         }
         #endregion
@@ -106,6 +108,11 @@ namespace CatDogLover_Repository.Utils
             {
                 Console.WriteLine("Lỗi khi gửi email: " + ex.Message);
             }
+        }
+
+        public static DateTime? ConvertMilisecondToDateTime(long? birthDate)
+        {
+            throw new NotImplementedException();
         }
     }
     
