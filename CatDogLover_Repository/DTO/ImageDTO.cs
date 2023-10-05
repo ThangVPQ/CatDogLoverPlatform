@@ -10,6 +10,6 @@ namespace CatDogLover_Repository.DTO
     public class ImageDTO
     {
         public Guid ImageID { get; set; }
-        public byte[] SourceImage { get; set; }
+        public string UrlImage { get; set; }
     }
 }

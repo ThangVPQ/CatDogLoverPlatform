@@ -11,9 +11,8 @@ namespace CatDogLover_Repository.DTO
     {
         public Guid UserID { get; set; }
         public Guid TypeGoodsID { get; set; }
-        public Guid TypeNewsFeedID { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
-        public List<IFormFile>? ListImage { get; set; }
+        public List<string>? ListImage { get; set; }
     }
 }

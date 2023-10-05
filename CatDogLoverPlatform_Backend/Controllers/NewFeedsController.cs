@@ -20,32 +20,28 @@ namespace CatDogLoverPlatform_Backend.Controllers
         }
         [HttpPost]
         [Route("create-news-feed")]
-        public async Task<IActionResult> CreateNewFeed([FromForm] NewsFeedRequest newFeedRequest)
+        public async Task<IActionResult> CreateNewFeed([FromBody] NewsFeedRequest newFeedRequest)
         {
             try
             {
                 NewsFeed newsFeed = FunctionConvert.ConvertObjectToObject<NewsFeed, NewsFeedRequest>(newFeedRequest);
+                newsFeed.TypeNewsFeedID = _dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("New Feed")).FirstOrDefault().TypesNewFeedID;
                 newsFeed.InsertDate = DateTime.Now;
                 newsFeed.Status = 1;
                 _dBContext.NewsFeeds.Add(newsFeed);
                 _dBContext.SaveChanges();
                 if (newFeedRequest.ListImage != null)
                 {
-                    foreach (var image in newFeedRequest.ListImage)
+                    foreach (var Image in newFeedRequest.ListImage)
                     {
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            image.CopyTo(memoryStream);
-                            byte[] fileBytes = memoryStream.ToArray();
                             Image imageInit = new Image()
                             {
                                 InsertDate = (DateTime)newsFeed.InsertDate,
-                                SourceImage = fileBytes,
+                                UrlImage = Image,
                                 NewsFeedID = (Guid)newsFeed.NewsFeedID
                             };
                             _dBContext.Images.Add(imageInit);
                             _dBContext.SaveChanges();
-                        }
                     }
                 }
                 return Ok();
@@ -57,11 +53,12 @@ namespace CatDogLoverPlatform_Backend.Controllers
         }
         [HttpPost]
         [Route("create-news-feed-for-sale")]
-        public async Task<IActionResult> CreateNewFeedForSale([FromForm] NewsFeedForSaleRequest newFeedRequest)
+        public async Task<IActionResult> CreateNewFeedForSale([FromBody] NewsFeedForSaleRequest newFeedRequest)
         {
             try
             {
                 NewsFeed newsFeed = FunctionConvert.ConvertObjectToObject<NewsFeed, NewsFeedForSaleRequest>(newFeedRequest);
+                newsFeed.TypeNewsFeedID = _dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID;
                 newsFeed.InsertDate = DateTime.Now;
                 newsFeed.BirthDate = FunctionConvert.ConvertMilisecondToDateTime((long)newFeedRequest.BirthDate);
                 newsFeed.Status = 1;
@@ -71,19 +68,15 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 {
                     foreach (var image in newFeedRequest.ListImage)
                     {
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            image.CopyTo(memoryStream);
-                            byte[] fileBytes = memoryStream.ToArray();
+
                             Image imageInit = new Image()
                             {
                                 InsertDate = (DateTime)newsFeed.InsertDate,
-                                SourceImage = fileBytes,
+                                UrlImage = image,
                                 NewsFeedID = (Guid)newsFeed.NewsFeedID
                             };
                             _dBContext.Images.Add(imageInit);
                             _dBContext.SaveChanges();
-                        }
                     }
                 }
                 return Ok();
@@ -213,7 +206,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
         }
         [HttpPost]
         [Route("update-new-feed")]
-        public async Task<IActionResult> UpdateNewFeed([FromForm] UpdateNewFeedRequest updateNewFeedRequest)
+        public async Task<IActionResult> UpdateNewFeed([FromBody] UpdateNewFeedRequest updateNewFeedRequest)
         {
             try
             {
@@ -234,12 +227,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                         if (image.ImageID.HasValue)
                         {
                             Image imageUpdate = _dBContext.Images.Where(t => t.NewsFeedID.Equals(image.ImageID)).FirstOrDefault();
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                image.SourceImage.CopyTo(memoryStream);
-                                byte[] fileBytes = memoryStream.ToArray();
-                                imageUpdate.SourceImage = fileBytes;
-                            }
+                            imageUpdate.UrlImage = image.UrlImage;
                             imageUpdate.UpdateDate = DateTime.Now;
                             _dBContext.Images.Update(imageUpdate);
                             _dBContext.SaveChanges();
@@ -247,12 +235,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                         else
                         {
                             Image imageUpdate = new();
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                image.SourceImage.CopyTo(memoryStream);
-                                byte[] fileBytes = memoryStream.ToArray();
-                                imageUpdate.SourceImage = fileBytes;
-                            }
+                            imageUpdate.UrlImage = image.UrlImage;
                             imageUpdate.NewsFeedID = updateNewFeedRequest.NewsFeedID;
                             imageUpdate.InsertDate = DateTime.Now;
                             _dBContext.Images.Add(imageUpdate);

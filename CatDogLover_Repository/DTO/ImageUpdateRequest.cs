@@ -11,6 +11,6 @@ namespace CatDogLover_Repository.DTO
     public class ImageUpdateRequest
     {
         public Guid? ImageID { get; set; }
-        public IFormFile SourceImage { get; set; }
+        public string UrlImage { get; set; }
     }
 }
