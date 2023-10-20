@@ -17,12 +17,11 @@ namespace CatDogLover_Repository.DTO
         public string? Content { get; set; }
         public string? Address { get; set; }
         public Decimal Price { get; set; }
-        public long? BirthDated { get; set; }
         public long? InsertDated { get; set; }
         public long? UpdateDated { get; set; }
         public int Status { get; set; }
         public int CommentQuantity { get; set; }
         public int LikeQuantity { get; set; }
-        public List<ImageDTO> Images { get; set; }
+        public List<ImageDTO> ListImages { get; set; }
     }
 }

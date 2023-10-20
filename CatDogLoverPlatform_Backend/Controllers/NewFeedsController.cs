@@ -60,8 +60,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 NewsFeed newsFeed = FunctionConvert.ConvertObjectToObject<NewsFeed, NewsFeedForSaleRequest>(newFeedRequest);
                 newsFeed.TypeNewsFeedID = _dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID;
                 newsFeed.InsertDate = DateTime.Now;
-                newsFeed.BirthDate = FunctionConvert.ConvertMilisecondToDateTime((long)newFeedRequest.BirthDate);
-                newsFeed.Status = 1;
+                newsFeed.Status = 3;
                 _dBContext.NewsFeeds.Add(newsFeed);
                 _dBContext.SaveChanges();
                 if (newFeedRequest.ListImage != null)
@@ -92,35 +91,24 @@ namespace CatDogLoverPlatform_Backend.Controllers
         {
             try
             {
-                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status != 2 && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID)).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status == 1 && (s.Title.Contains(paginateRequest.Search) || s.Content.Contains(paginateRequest.Search)) && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID)).OrderByDescending(t => t.InsertDate).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
                 List<NewsFeedForSalesDTO> newsFeedDTO = FunctionConvert.ConvertListToList<NewsFeedForSalesDTO, NewsFeed>(newsFeeds);
                 for (int i = 0; i < newsFeedDTO.Count; i++)
                 {
                     newsFeedDTO[i].UserName = _dBContext.Users.Where(u => u.UserID.Equals(newsFeeds[i].UserID)).FirstOrDefault().FullName;
                     newsFeedDTO[i].TypeGoodsName = _dBContext.TypeGoods.Where(u => u.TypeGoodsID.Equals(newsFeeds[i].TypeGoodsID)).FirstOrDefault().TypeGoodsName;
                     newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
-                    newsFeedDTO[i].BirthDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].BirthDate);
+                    if (newsFeeds[i].UpdateDate.HasValue)
+                    {
+                        newsFeedDTO[i].UpdateDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].UpdateDate);
+                    }
                     int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
-                    //List<Comment> comments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
-                    //List<CommentDTO> commentDTOs = FunctionConvert.ConvertListToList<CommentDTO, Comment>(comments);
-                    //for (int j = 0; j < commentDTOs.Count; j++)
-                    //{
-                    //    commentDTOs[i].InsertDated = (long)FunctionConvert.ConvertDateTimeToMilisecond(comments[i].InsertDate);
-                    //    commentDTOs[i].UserName = _dBContext.Users.Where(t => t.UserID.Equals(comments[i].UserID)).FirstOrDefault().FullName;
-                    //}
-                    //List<NumberOfInteraction> numberOfInteractions = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
-                    //List<NumberOfInteractionDTO> numberOfInteractionDTOs = FunctionConvert.ConvertListToList<NumberOfInteractionDTO, NumberOfInteraction>(numberOfInteractions);
-                    //for (int k = 0; k < numberOfInteractionDTOs.Count; k++)
-                    //{
-                    //    numberOfInteractionDTOs[i].InsertDated = (long)FunctionConvert.ConvertDateTimeToMilisecond(numberOfInteractions[i].InsertDate);
-                    //    numberOfInteractionDTOs[i].UserName = _dBContext.Users.Where(t => t.UserID.Equals(numberOfInteractions[i].UserID)).FirstOrDefault().FullName;
-                    //}
                     List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
                     List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
                     newsFeedDTO[i].CommentQuantity = countComments;
                     newsFeedDTO[i].LikeQuantity = countLike;
-                    newsFeedDTO[i].Images = imageDTOs;
+                    newsFeedDTO[i].ListImages = imageDTOs;
                 }
                 return Ok(new PaginatedData<NewsFeedForSalesDTO>
                 {
@@ -141,20 +129,24 @@ namespace CatDogLoverPlatform_Backend.Controllers
         {
             try
             {
-                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status != 2 && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("New Feed")).FirstOrDefault().TypesNewFeedID)).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status == 1 && (s.Title.Contains(paginateRequest.Search) || s.Content.Contains(paginateRequest.Search)) && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("New Feed")).FirstOrDefault().TypesNewFeedID)).OrderByDescending(t => t.InsertDate).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
                 int count = newsFeeds.Count;
                 List<NewsFeedDTO> newsFeedDTO = FunctionConvert.ConvertListToList<NewsFeedDTO, NewsFeed>(newsFeeds);
                 for (int i = 0; i < newsFeedDTO.Count; i++)
                 {
                     newsFeedDTO[i].UserName = _dBContext.Users.Where(u => u.UserID.Equals(newsFeeds[i].UserID)).FirstOrDefault().FullName;
                     newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
+                    if (newsFeeds[i].UpdateDate.HasValue)
+                    {
+                        newsFeedDTO[i].UpdateDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].UpdateDate);
+                    }
                     int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
                     List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
                     newsFeedDTO[i].LikeQuantity = countLike;
                     newsFeedDTO[i].CommentQuantity = countComments;
-                    newsFeedDTO[i].Images = imageDTOs;
+                    newsFeedDTO[i].ListImages = imageDTOs;
                 }
                 return Ok(new PaginatedData<NewsFeedDTO>
                 {
@@ -167,24 +159,6 @@ namespace CatDogLoverPlatform_Backend.Controllers
             catch (Exception e)
             {
                 return BadRequest(e);
-            }
-        }
-        [HttpPost]
-        [Route("get-new-feed-by-id")]
-        public async Task<IActionResult> GetNewFeedById([FromBody] IdRequest idRequest)
-        {
-            try
-            {
-                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(t => t.NewsFeedID.Equals(idRequest.Id)).FirstOrDefault();
-                List<Comment> comments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeed.NewsFeedID)).ToList();
-                List<NumberOfInteraction> numberOfInteractions = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeed.NewsFeedID)).ToList();
-                newsFeed.Comments = comments;
-                newsFeed.NumberOfInteractions = numberOfInteractions;
-                return Ok(newsFeed);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
             }
         }
         [HttpPost]
@@ -213,13 +187,60 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 NewsFeed newsFeed = _dBContext.NewsFeeds.Where(s => s.NewsFeedID.Equals(updateNewFeedRequest.NewsFeedID)).FirstOrDefault();
                 newsFeed.NewsFeedID = updateNewFeedRequest.NewsFeedID;
                 newsFeed.TypeGoodsID = updateNewFeedRequest.TypeGoodsID ?? newsFeed.TypeGoodsID;
-                newsFeed.PhoneNumber = updateNewFeedRequest.PhoneNumber ?? newsFeed.PhoneNumber;
                 newsFeed.Title = updateNewFeedRequest.Title ?? newsFeed.Title;
                 newsFeed.Content = updateNewFeedRequest.Content ?? newsFeed.Content;
-                newsFeed.Address = updateNewFeedRequest.Address ?? newsFeed.Address;
-                newsFeed.Price = updateNewFeedRequest.Price ?? newsFeed.Price;
-                newsFeed.BirthDate = updateNewFeedRequest.BirthDate.HasValue ? FunctionConvert.ConvertMilisecondToDateTime(updateNewFeedRequest.BirthDate) : newsFeed.BirthDate;
                 newsFeed.Status = updateNewFeedRequest.Status ?? newsFeed.Status;
+                newsFeed.UpdateDate = DateTime.Now;
+                newsFeed.UpdateBy = updateNewFeedRequest.UserID;
+                if (!updateNewFeedRequest.ImageUpdateRequests.IsNullOrEmpty())
+                {
+                    foreach (var image in updateNewFeedRequest.ImageUpdateRequests)
+                    {
+                        if (image.ImageID.HasValue)
+                        {
+                            Image imageUpdate = _dBContext.Images.Where(t => t.NewsFeedID.Equals(image.ImageID)).FirstOrDefault();
+                            imageUpdate.UrlImage = image.UrlImage;
+                            imageUpdate.UpdateDate = DateTime.Now;
+                            _dBContext.Images.Update(imageUpdate);
+                            _dBContext.SaveChanges();
+                        }
+                        else
+                        {
+                            Image imageUpdate = new();
+                            imageUpdate.UrlImage = image.UrlImage;
+                            imageUpdate.NewsFeedID = updateNewFeedRequest.NewsFeedID;
+                            imageUpdate.InsertDate = DateTime.Now;
+                            _dBContext.Images.Add(imageUpdate);
+                            _dBContext.SaveChanges();
+                        }
+                    }
+                }
+                _dBContext.NewsFeeds.Update(newsFeed);
+                _dBContext.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpPost]
+        [Route("update-news-feed-for-sales")]
+        public async Task<IActionResult> UpdateNewFeedForSales([FromBody] UpdateNewFeedForSalesRequest updateNewFeedRequest)
+        {
+            try
+            {
+                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(s => s.NewsFeedID.Equals(updateNewFeedRequest.NewsFeedID)).FirstOrDefault();
+                newsFeed.NewsFeedID = updateNewFeedRequest.NewsFeedID;
+                newsFeed.TypeGoodsID = updateNewFeedRequest.TypeGoodsID ?? newsFeed.TypeGoodsID;
+                newsFeed.Title = updateNewFeedRequest.Title ?? newsFeed.Title;
+                newsFeed.Content = updateNewFeedRequest.Content ?? newsFeed.Content;
+                newsFeed.Price = updateNewFeedRequest.Price ?? newsFeed.Price;
+                newsFeed.PhoneNumber = updateNewFeedRequest.PhoneNumber ?? newsFeed.PhoneNumber;
+                newsFeed.Address = updateNewFeedRequest.Address ?? newsFeed.Address;
+                newsFeed.UpdateDate = DateTime.Now;
+                newsFeed.UpdateBy = updateNewFeedRequest.UserID;
+                newsFeed.Status = 3;
                 if (!updateNewFeedRequest.ImageUpdateRequests.IsNullOrEmpty())
                 {
                     foreach (var image in updateNewFeedRequest.ImageUpdateRequests)
@@ -282,7 +303,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 }
                 newsFeedDTO.LikeQuantity = countLike;
                 newsFeedDTO.CommentQuantity = countComments;
-                newsFeedDTO.Images = imageDTOs;
+                newsFeedDTO.ListImages = imageDTOs;
                 newsFeedDTO.NumberOfInteractionDTOs = numberOfInteractionDTOs;
                 newsFeedDTO.CommentDTOs = commentDTOs;
                 return Ok(newsFeedDTO);
@@ -322,7 +343,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 }
                 newsFeedDTO.LikeQuantity = countLike;
                 newsFeedDTO.CommentQuantity = countComments;
-                newsFeedDTO.Images = imageDTOs;
+                newsFeedDTO.ListImages = imageDTOs;
                 newsFeedDTO.NumberOfInteractionDTOs = numberOfInteractionDTOs;
                 newsFeedDTO.CommentDTOs = commentDTOs;
                 return Ok(newsFeedDTO);
@@ -330,6 +351,125 @@ namespace CatDogLoverPlatform_Backend.Controllers
             catch (Exception e)
             {
                 return BadRequest(e);
+            }
+        }
+        [HttpPost]
+        [Route("get-news-feed-for-sale-by-user-id")]
+        public async Task<IActionResult> GetNewsFeedForSalebyUserID([FromBody] PaginateRequestByUserID paginateRequest)
+        {
+            try
+            {
+                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status != 2 && s.UserID.Equals(paginateRequest.UserID) && (s.Title.Contains(paginateRequest.Search) || s.Content.Contains(paginateRequest.Search)) && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID)).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                List<NewsFeedForSalesDTO> newsFeedDTO = FunctionConvert.ConvertListToList<NewsFeedForSalesDTO, NewsFeed>(newsFeeds);
+                for (int i = 0; i < newsFeedDTO.Count; i++)
+                {
+                    newsFeedDTO[i].UserName = _dBContext.Users.Where(u => u.UserID.Equals(newsFeeds[i].UserID)).FirstOrDefault().FullName;
+                    newsFeedDTO[i].TypeGoodsName = _dBContext.TypeGoods.Where(u => u.TypeGoodsID.Equals(newsFeeds[i].TypeGoodsID)).FirstOrDefault().TypeGoodsName;
+                    newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
+                    int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
+                    List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
+                    newsFeedDTO[i].CommentQuantity = countComments;
+                    newsFeedDTO[i].LikeQuantity = countLike;
+                    newsFeedDTO[i].ListImages = imageDTOs;
+                }
+                return Ok(new PaginatedData<NewsFeedForSalesDTO>
+                {
+                    Data = newsFeedDTO,
+                    CurrentPage = paginateRequest.CurrentPage,
+                    TotalPages = _dBContext.NewsFeeds.Where(s => s.Status != 2).Count(),
+                    PageSize = paginateRequest.PageSize
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpPost]
+        [Route("get-news-feed-by-user-id")]
+        public async Task<IActionResult> GetNewsFeedByUserID([FromBody] PaginateRequestByUserID paginateRequest)
+        {
+            try
+            {
+                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status != 2 && s.UserID.Equals(paginateRequest.UserID) && (s.Title.Contains(paginateRequest.Search) || s.Content.Contains(paginateRequest.Search)) && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("New Feed")).FirstOrDefault().TypesNewFeedID)).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                int count = newsFeeds.Count;
+                List<NewsFeedDTO> newsFeedDTO = FunctionConvert.ConvertListToList<NewsFeedDTO, NewsFeed>(newsFeeds);
+                for (int i = 0; i < newsFeedDTO.Count; i++)
+                {
+                    newsFeedDTO[i].UserName = _dBContext.Users.Where(u => u.UserID.Equals(newsFeeds[i].UserID)).FirstOrDefault().FullName;
+                    newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
+                    int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
+                    List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
+                    newsFeedDTO[i].LikeQuantity = countLike;
+                    newsFeedDTO[i].CommentQuantity = countComments;
+                    newsFeedDTO[i].ListImages = imageDTOs;
+                }
+                return Ok(new PaginatedData<NewsFeedDTO>
+                {
+                    Data = newsFeedDTO,
+                    CurrentPage = paginateRequest.CurrentPage,
+                    TotalPages = _dBContext.NewsFeeds.Where(s => s.Status != 2).Count(),
+                    PageSize = paginateRequest.PageSize
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpPost]
+        [Route("get-news-feed-for-sale-with-status-request")]
+        public async Task<IActionResult> GetNewsFeedForSaleWithStatusRequest([FromBody] PaginateRequest paginateRequest)
+        {
+            try
+            {
+                List<NewsFeed> newsFeeds = _dBContext.NewsFeeds.Where(s => s.Status == 3 && (s.Title.Contains(paginateRequest.Search) || s.Content.Contains(paginateRequest.Search)) && s.TypeNewsFeedID.Equals(_dBContext.TypeNewsFeeds.Where(t => t.TypesNewFeedName.Equals("Sale Product")).FirstOrDefault().TypesNewFeedID)).OrderByDescending(t => t.InsertDate).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                List<NewsFeedForSalesDTO> newsFeedDTO = FunctionConvert.ConvertListToList<NewsFeedForSalesDTO, NewsFeed>(newsFeeds);
+                for (int i = 0; i < newsFeedDTO.Count; i++)
+                {
+                    newsFeedDTO[i].UserName = _dBContext.Users.Where(u => u.UserID.Equals(newsFeeds[i].UserID)).FirstOrDefault().FullName;
+                    newsFeedDTO[i].TypeGoodsName = _dBContext.TypeGoods.Where(u => u.TypeGoodsID.Equals(newsFeeds[i].TypeGoodsID)).FirstOrDefault().TypeGoodsName;
+                    newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
+                    int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
+                    List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
+                    newsFeedDTO[i].CommentQuantity = countComments;
+                    newsFeedDTO[i].LikeQuantity = countLike;
+                    newsFeedDTO[i].ListImages = imageDTOs;
+                }
+                return Ok(new PaginatedData<NewsFeedForSalesDTO>
+                {
+                    Data = newsFeedDTO,
+                    CurrentPage = paginateRequest.CurrentPage,
+                    TotalPages = _dBContext.NewsFeeds.Where(s => s.Status != 2).Count(),
+                    PageSize = paginateRequest.PageSize
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpPost]
+        [Route("confirm-news-feed-for-sales")]
+        public async Task<IActionResult> ConfirmNewsFeedforSale([FromBody] ConfirmNewsFeedForSale confirmNewsFeedForSale)
+        {
+            try
+            {
+                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(t => t.NewsFeedID.Equals(confirmNewsFeedForSale.NewsFeedID)).FirstOrDefault();
+                newsFeed.Status = confirmNewsFeedForSale.Status? 1 : 4;
+                _dBContext.NewsFeeds.Update(newsFeed);
+                _dBContext.SaveChanges();
+                return Ok(newsFeed);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
             }
         }
     }

@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://thang-swp.vercel.app");
+            policy.WithOrigins("http://localhost:3000", "https://thang-swp.vercel.app", "http://localhost:8080");
             policy.AllowAnyMethod();
             policy.AllowAnyHeader();
         });

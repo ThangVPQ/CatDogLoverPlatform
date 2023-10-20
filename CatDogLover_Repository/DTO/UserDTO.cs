@@ -13,6 +13,7 @@ namespace CatDogLover_Repository.DTO
         public string LastName { get; set; }
         public string Address { get; set; }
         public long BirthDated { get; set; }
+        public int? Status { get; set; }
         public long InsertedDated { get; set; }
         public long UpdatedDate { get; set; }
         public long UpdatedBy { get; set; }

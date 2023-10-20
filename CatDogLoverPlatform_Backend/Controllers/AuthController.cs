@@ -151,12 +151,26 @@ namespace CatDogLoverPlatform_Backend.Controllers
         {
             try
             {
-                List<User> users = _dBContext.Users.Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
-                return Ok(new PaginatedData<User>
+                List<User> users = _dBContext.Users.Include(t => t.Role).Where(t => t.Role.RoleName.Equals("MEMBER")).Skip((paginateRequest.CurrentPage - 1) * paginateRequest.PageSize).Take(paginateRequest.PageSize).ToList();
+                List<UserDTO> userDTOs = FunctionConvert.ConvertListToList<UserDTO, User>(users);
+                for (int i = 0; i < userDTOs.Count; i++)
                 {
-                    Data = users,
+                    userDTOs[i].InsertedDated = (long)FunctionConvert.ConvertDateTimeToMilisecond(users[i].InsertDate);
+                    userDTOs[i].RoleName = users[i].Role.RoleName;
+                    try
+                    {
+                        userDTOs[i].UpdatedDate = (long)FunctionConvert.ConvertDateTimeToMilisecond(users[i].UpdateDate);
+                    }
+                    catch
+                    {
+                        userDTOs[i].UpdatedDate = 0;
+                    }
+                }
+                return Ok(new PaginatedData<UserDTO>
+                {
+                    Data = userDTOs,
                     CurrentPage = paginateRequest.CurrentPage,
-                    TotalPages = _dBContext.Users.Count(),
+                    TotalPages = _dBContext.Users.Where(t => t.Role.RoleName.Equals("MEMBER")).Count(),
                     PageSize = paginateRequest.PageSize
                 });
             }
@@ -167,7 +181,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
         }
         [HttpPost]
         [Route("update-user")]
-        public async Task<IActionResult> Register([FromBody] UserUpdate userUpdate)
+        public async Task<IActionResult> UpdateUSer([FromBody] UserUpdate userUpdate)
         {
             try
             {
@@ -180,6 +194,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
                     checkUser.PhoneNumber = userUpdate.PhoneNumber.IsNullOrEmpty() ? checkUser.PhoneNumber : userUpdate.PhoneNumber;
                     checkUser.LastName = userUpdate.LastName.IsNullOrEmpty() ? checkUser.LastName : userUpdate.LastName;
                     checkUser.Address = userUpdate.Address.IsNullOrEmpty() ? checkUser.Address : userUpdate.Address;
+                    checkUser.Status = userUpdate.Status.HasValue ? userUpdate.Status : userUpdate.Status;
                     _dBContext.Users.Update(checkUser);
                     _dBContext.SaveChanges();
                     return Ok("Update Account Success");

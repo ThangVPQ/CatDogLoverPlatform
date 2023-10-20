@@ -18,6 +18,6 @@ namespace CatDogLover_Repository.DTO
         public int Status { get; set; }
         public int CommentQuantity{ get; set; }
         public int LikeQuantity { get; set; }
-        public List<ImageDTO> Images { get; set; }
+        public List<ImageDTO> ListImages { get; set; }
     }
 }

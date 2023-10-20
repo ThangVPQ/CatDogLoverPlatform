@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CatDogLover_Repository.DTO
 {
-	public class PaginateRequest
-	{
+    public class PaginateRequestByUserID
+    {
+        public Guid UserID { get; set; }
         public string? Search { get; set; }
 
         [DefaultValue(1)]
@@ -13,4 +18,3 @@ namespace CatDogLover_Repository.DTO
         public int PageSize { get; set; } = 10;
     }
 }
-

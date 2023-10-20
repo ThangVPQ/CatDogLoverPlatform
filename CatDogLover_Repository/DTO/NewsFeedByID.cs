@@ -19,6 +19,6 @@ namespace CatDogLover_Repository.DTO
         public int LikeQuantity { get; set; }
         public List<CommentDTO>? CommentDTOs { get; set; }
         public List<NumberOfInteractionDTO>? NumberOfInteractionDTOs{ get; set; }
-        public List<ImageDTO> Images { get; set; }
+        public List<ImageDTO> ListImages { get; set; }
     }
 }

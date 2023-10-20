@@ -13,7 +13,6 @@ namespace CatDogLover_Repository.DTO
         public string? Address { get; set; }
         public Decimal? Price { get; set; }
         public string PhoneNumber { get; set; }
-        public long? BirthDate { get; set; }
         public List<string>? ListImage { get; set; }
     }
 }

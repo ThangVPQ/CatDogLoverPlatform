@@ -16,5 +16,6 @@ namespace CatDogLover_Repository.DTO
         public string? LastName { get; set; }
         public string? Address { get; set; }
         public long? BirthDate { get; set; }
+        public int? Status { get; set; }
     }
 }
