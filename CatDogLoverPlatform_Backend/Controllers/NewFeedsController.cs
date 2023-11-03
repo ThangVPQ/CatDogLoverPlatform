@@ -236,6 +236,8 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 newsFeed.Title = updateNewFeedRequest.Title ?? newsFeed.Title;
                 newsFeed.Content = updateNewFeedRequest.Content ?? newsFeed.Content;
                 newsFeed.Price = updateNewFeedRequest.Price ?? newsFeed.Price;
+                newsFeed.Quantity = updateNewFeedRequest.Quantity ?? newsFeed.Quantity;
+                newsFeed.Unit = updateNewFeedRequest.Unit ?? newsFeed.Unit;
                 newsFeed.PhoneNumber = updateNewFeedRequest.PhoneNumber ?? newsFeed.PhoneNumber;
                 newsFeed.Address = updateNewFeedRequest.Address ?? newsFeed.Address;
                 newsFeed.UpdateDate = DateTime.Now;

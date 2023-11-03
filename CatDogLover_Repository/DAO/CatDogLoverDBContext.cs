@@ -25,17 +25,17 @@ namespace CatDogLover_Repository.DAO
         public DbSet<TypeNewsFeed> TypeNewsFeeds { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //if (!optionsBuilder.IsConfigured)
-            //{
-            //    IConfiguration config = new ConfigurationBuilder()
-            //                            .SetBasePath(Directory.GetCurrentDirectory())
-            //                            .AddJsonFile("appsettings.json").Build();
+            if (!optionsBuilder.IsConfigured)
+           {
+                IConfiguration config = new ConfigurationBuilder()
+                                       .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json").Build();
 
-            //    string connectionString = config["ConnectionStrings:DefaultConnection"];
-            //    optionsBuilder.UseSqlServer(connectionString);
-            //}
-            //base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=SQL8002.site4now.net;Initial Catalog=db_a9f782_catdogloverdb;User Id=db_a9f782_catdogloverdb_admin;Password=thang123");
+                string connectionString = config["ConnectionStrings:DefaultConnection"];
+               optionsBuilder.UseSqlServer(connectionString);
+            }
+             base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer("Data Source=SQL8002.site4now.net;Initial Catalog=db_a9f782_catdogloverdb;User Id=db_a9f782_catdogloverdb_admin;Password=thang123");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,12 +43,10 @@ namespace CatDogLover_Repository.DAO
                 .HasOne(pp => pp.Role)
                 .WithMany(cp => cp.Users)
                 .HasForeignKey(pp => pp.RoleID);
-
             modelBuilder.Entity<NewsFeed>()
                 .HasOne(pp => pp.User)
                 .WithMany(e => e.NewsFeeds)
                 .HasForeignKey(pp => pp.UserID);
-
             modelBuilder.Entity<NewsFeed>()
                .HasOne(e => e.TypeGoods)
                .WithMany(d => d.NewsFeeds)

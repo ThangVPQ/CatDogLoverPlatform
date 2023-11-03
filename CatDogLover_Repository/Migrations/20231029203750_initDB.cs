@@ -85,14 +85,15 @@ namespace CatDogLoverRepository.Migrations
                 {
                     NewsFeedID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TypeGoodsID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TypeGoodsID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TypeNewsFeedID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -105,8 +106,7 @@ namespace CatDogLoverRepository.Migrations
                         name: "FK_NewsFeeds_TypeGoods_TypeGoodsID",
                         column: x => x.TypeGoodsID,
                         principalTable: "TypeGoods",
-                        principalColumn: "TypeGoodsID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "TypeGoodsID");
                     table.ForeignKey(
                         name: "FK_NewsFeeds_TypeNewsFeeds_TypeNewsFeedID",
                         column: x => x.TypeNewsFeedID,
@@ -155,7 +155,7 @@ namespace CatDogLoverRepository.Migrations
                 {
                     ImageID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NewsFeedID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SourceImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UrlImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

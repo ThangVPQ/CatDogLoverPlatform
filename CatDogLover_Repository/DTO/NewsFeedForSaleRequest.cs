@@ -11,8 +11,10 @@ namespace CatDogLover_Repository.DTO
         public string? Title { get; set; }
         public string? Content { get; set; }
         public string? Address { get; set; }
+        public int? Quantity { get; set; }
+        public string? Unit { get; set; }
         public Decimal? Price { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public List<string>? ListImage { get; set; }
     }
 }

@@ -74,7 +74,6 @@ namespace CatDogLoverRepository.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UrlImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ImageID");
@@ -93,9 +92,6 @@ namespace CatDogLoverRepository.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
@@ -108,17 +104,23 @@ namespace CatDogLoverRepository.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TypeGoodsID")
+                    b.Property<Guid?>("TypeGoodsID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TypeNewsFeedID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
@@ -298,9 +300,7 @@ namespace CatDogLoverRepository.Migrations
                 {
                     b.HasOne("CatDogLover_Repository.DAO.TypeGoods", "TypeGoods")
                         .WithMany("NewsFeeds")
-                        .HasForeignKey("TypeGoodsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TypeGoodsID");
 
                     b.HasOne("CatDogLover_Repository.DAO.TypeNewsFeed", "TypeNewsFeed")
                         .WithMany("NewsFeeds")
