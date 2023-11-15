@@ -26,8 +26,10 @@ namespace CatDogLover_Repository.DAO
 		public DateTime? UpdateDate { get; set; }
 		public Guid? UpdateBy { get; set; }
 		public int? Status { get; set; }
-		public List<Comment>? Comments { get; set; }
-		public List<NumberOfInteraction>? NumberOfInteractions { get; set; }
+        public Guid? InterestedUserID { get; set; }
+        public List<Comment>? Comments { get; set; }
+        public List<Interested>? Interesteds { get; set; }
+        public List<NumberOfInteraction>? NumberOfInteractions { get; set; }
 		public List<Image>? Images { get; set; }
     }
 }

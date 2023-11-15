@@ -17,6 +17,8 @@ namespace CatDogLover_Repository.DAO
         }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Interested> Interesteds { get; set; }
+
         public DbSet<NewsFeed> NewsFeeds { get; set; }
         public DbSet<TypeGoods> TypeGoods { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -57,7 +59,14 @@ namespace CatDogLover_Repository.DAO
              .HasForeignKey(e => e.NewsFeedID).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Comment>()
             .HasOne(e => e.User)
-            .WithMany(d => d.Comments)
+            .WithMany(d => d.Comments);
+            modelBuilder.Entity<Interested>()
+             .HasOne(e => e.NewsFeed)
+             .WithMany(d => d.Interesteds)
+             .HasForeignKey(e => e.NewsFeedID).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Interested>()
+            .HasOne(e => e.User)
+            .WithMany(d => d.Interesteds)
             .HasForeignKey(e => e.UserID).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<NumberOfInteraction>()
            .HasOne(e => e.User)

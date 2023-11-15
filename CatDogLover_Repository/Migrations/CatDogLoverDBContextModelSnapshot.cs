@@ -83,6 +83,42 @@ namespace CatDogLoverRepository.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("CatDogLover_Repository.DAO.Interested", b =>
+                {
+                    b.Property<Guid>("InterestedID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("NewsFeedID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UpdateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("InterestedID");
+
+                    b.HasIndex("NewsFeedID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Interesteds");
+                });
+
             modelBuilder.Entity("CatDogLover_Repository.DAO.NewsFeed", b =>
                 {
                     b.Property<Guid>("NewsFeedID")
@@ -97,6 +133,9 @@ namespace CatDogLoverRepository.Migrations
 
                     b.Property<DateTime?>("InsertDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("InterestedUserID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -277,7 +316,7 @@ namespace CatDogLoverRepository.Migrations
                     b.HasOne("CatDogLover_Repository.DAO.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("NewsFeed");
@@ -294,6 +333,25 @@ namespace CatDogLoverRepository.Migrations
                         .IsRequired();
 
                     b.Navigation("NewsFeed");
+                });
+
+            modelBuilder.Entity("CatDogLover_Repository.DAO.Interested", b =>
+                {
+                    b.HasOne("CatDogLover_Repository.DAO.NewsFeed", "NewsFeed")
+                        .WithMany("Interesteds")
+                        .HasForeignKey("NewsFeedID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CatDogLover_Repository.DAO.User", "User")
+                        .WithMany("Interesteds")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("NewsFeed");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CatDogLover_Repository.DAO.NewsFeed", b =>
@@ -357,6 +415,8 @@ namespace CatDogLoverRepository.Migrations
 
                     b.Navigation("Images");
 
+                    b.Navigation("Interesteds");
+
                     b.Navigation("NumberOfInteractions");
                 });
 
@@ -378,6 +438,8 @@ namespace CatDogLoverRepository.Migrations
             modelBuilder.Entity("CatDogLover_Repository.DAO.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Interesteds");
 
                     b.Navigation("NewsFeeds");
 

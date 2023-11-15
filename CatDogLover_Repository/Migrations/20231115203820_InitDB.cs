@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatDogLoverRepository.Migrations
 {
     /// <inheritdoc />
-    public partial class initDB : Migration
+    public partial class InitDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,7 +97,8 @@ namespace CatDogLoverRepository.Migrations
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    InterestedUserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -146,7 +147,8 @@ namespace CatDogLoverRepository.Migrations
                         name: "FK_Comments_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "UserID");
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,6 +170,34 @@ namespace CatDogLoverRepository.Migrations
                         principalTable: "NewsFeeds",
                         principalColumn: "NewsFeedID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Interesteds",
+                columns: table => new
+                {
+                    InterestedID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NewsFeedID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Interesteds", x => x.InterestedID);
+                    table.ForeignKey(
+                        name: "FK_Interesteds_NewsFeeds_NewsFeedID",
+                        column: x => x.NewsFeedID,
+                        principalTable: "NewsFeeds",
+                        principalColumn: "NewsFeedID");
+                    table.ForeignKey(
+                        name: "FK_Interesteds_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -210,6 +240,16 @@ namespace CatDogLoverRepository.Migrations
                 column: "NewsFeedID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Interesteds_NewsFeedID",
+                table: "Interesteds",
+                column: "NewsFeedID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Interesteds_UserID",
+                table: "Interesteds",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NewsFeeds_TypeGoodsID",
                 table: "NewsFeeds",
                 column: "TypeGoodsID");
@@ -248,6 +288,9 @@ namespace CatDogLoverRepository.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Interesteds");
 
             migrationBuilder.DropTable(
                 name: "NumberOfInteractions");

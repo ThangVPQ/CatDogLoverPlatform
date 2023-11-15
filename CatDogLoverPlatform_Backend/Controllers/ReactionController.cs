@@ -59,5 +59,34 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 return BadRequest(e);
             }
         }
+        [HttpPost]
+        [Route("Interested-news-feed")]
+        public async Task<IActionResult> InterestedNewsFeed([FromBody] LikeRequest LikeRequest)
+        {
+            try
+            {
+                Interested interested = _dBContext.Interesteds.Where(t => t.NewsFeedID.Equals(LikeRequest.NewsFeedID) && t.UserID.Equals(LikeRequest.UserID)).FirstOrDefault();
+                if (interested == null)
+                {
+                    Interested newInterested = FunctionConvert.ConvertObjectToObject<Interested, LikeRequest>(LikeRequest);
+                    newInterested.InsertDate = DateTime.Now;
+                    newInterested.Status = 2;
+                    _dBContext.Interesteds.Add(newInterested);
+                    _dBContext.SaveChanges();
+                    return Ok("Like post Success");
+                }
+                else
+                {
+                    _dBContext.Interesteds.Remove(interested);
+                    _dBContext.SaveChanges();
+                    return Ok("Unlike post Success");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 }

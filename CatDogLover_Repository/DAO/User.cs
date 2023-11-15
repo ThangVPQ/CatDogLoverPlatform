@@ -26,7 +26,8 @@ namespace CatDogLover_Repository.DAO
 		public string? Otp { get; set; }
 		public DateTime? LogOutDate { get; set; }
 		public List<NewsFeed>? NewsFeeds { get; set; }
-		public List<Comment>? Comments { get; set; }
+        public List<Interested>? Interesteds { get; set; }
+        public List<Comment>? Comments { get; set; }
 		public List<NumberOfInteraction>? NumberOfInteractions { get; set; }
 	}
 }

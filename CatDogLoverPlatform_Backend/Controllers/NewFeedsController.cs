@@ -6,6 +6,7 @@ using CatDogLover_Repository.DAO;
 using CatDogLover_Repository.DTO;
 using CatDogLover_Repository.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -317,7 +318,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
         }
         [HttpPost]
         [Route("get-news-feed-for-sale-by-id")]
-        public async Task<IActionResult> GetNewsFeedForSaleById([FromBody] IdRequest idRequest)
+        public async Task<IActionResult> GetNewsFeedForSaleById([FromBody] IdRequests idRequest)
         {
             try
             {
@@ -344,6 +345,8 @@ namespace CatDogLoverPlatform_Backend.Controllers
                     numberOfInteractionDTOs[k].UserName = _dBContext.Users.Where(t => t.UserID.Equals(numberOfInteractions[k].UserID)).FirstOrDefault().FullName;
                 }
                 newsFeedDTO.LikeQuantity = countLike;
+                Interested interested = _dBContext.Interesteds.Where(s => s.NewsFeedID.Equals(idRequest.Id) && s.UserID.Equals(idRequest.UserId) && s.Status == 1).FirstOrDefault();
+                newsFeedDTO.PhoneNumber = interested == null ? null :newsFeed.PhoneNumber;
                 newsFeedDTO.CommentQuantity = countComments;
                 newsFeedDTO.ListImages = imageDTOs;
                 newsFeedDTO.NumberOfInteractionDTOs = numberOfInteractionDTOs;
@@ -406,6 +409,18 @@ namespace CatDogLoverPlatform_Backend.Controllers
                     int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
                     List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
+                    List<Interested> interesteds = await _dBContext.Interesteds.Where(t => t.NewsFeedID.Equals(paginateRequest.UserID)).ToListAsync();
+                    foreach(var item in interesteds)
+                    {
+                        User user = _dBContext.Users.Where(u => u.UserID.Equals(item.UserID)).FirstOrDefault();
+                        if (user != null)
+                        {
+                            UserInterested userInterested = new UserInterested();
+                            userInterested.UserId = user.UserID;
+                            userInterested.UserName = user.FullName;
+                            newsFeedDTO[i].UserInteresteds.Add(userInterested);
+                        }
+                    }
                     newsFeedDTO[i].LikeQuantity = countLike;
                     newsFeedDTO[i].CommentQuantity = countComments;
                     newsFeedDTO[i].ListImages = imageDTOs;
@@ -468,6 +483,41 @@ namespace CatDogLoverPlatform_Backend.Controllers
                 _dBContext.NewsFeeds.Update(newsFeed);
                 _dBContext.SaveChanges();
                 return Ok(newsFeed);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPost]
+        [Route("confirm-user-accept-seen-numberphone-for-news-feed-for-sales")]
+        public async Task<IActionResult> UserNewsFeedforSale([FromBody] ConfirmUserForNewsFeedForSale confirmNewsFeedForSale)
+        {
+            try
+            {
+                Interested interested = _dBContext.Interesteds.Where(t => t.NewsFeedID.Equals(confirmNewsFeedForSale.NewsFeedID) && t.UserID.Equals(confirmNewsFeedForSale.UserID)).FirstOrDefault();
+                interested.Status = 1 ;
+                _dBContext.Interesteds.Update(interested);
+                _dBContext.SaveChanges();
+                return Ok(confirmNewsFeedForSale);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPost]
+        [Route("confirm-user-for-news-feed-for-sales")]
+        public async Task<IActionResult> UserConfirmNewsFeedforSale([FromBody] ConfirmUserForNewsFeedForSale confirmNewsFeedForSale)
+        {
+            try
+            {
+                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(s => s.NewsFeedID.Equals(confirmNewsFeedForSale.NewsFeedID).FirstOrDefault();
+                newsFeed.InterestedUserID = confirmNewsFeedForSale.UserID;
+                newsFeed.Status = 4;
+                _dBContext.NewsFeeds.Update(newsFeed);
+                _dBContext.SaveChanges();
+                return Ok(confirmNewsFeedForSale);
             }
             catch (Exception e)
             {
