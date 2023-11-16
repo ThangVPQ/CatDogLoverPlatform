@@ -373,6 +373,22 @@ namespace CatDogLoverPlatform_Backend.Controllers
                     newsFeedDTO[i].InsertDated = FunctionConvert.ConvertDateTimeToMilisecond(newsFeeds[i].InsertDate);
                     int countComments = _dBContext.Comments.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
+                    List<Interested> interesteds = await _dBContext.Interesteds.Where(t => t.NewsFeedID.Equals(newsFeedDTO[i].NewsFeedID)).ToListAsync();
+                    foreach (var item in interesteds)
+                    {
+                        User user = _dBContext.Users.Where(u => u.UserID.Equals(item.UserID)).FirstOrDefault();
+                        if (user != null)
+                        {
+                            UserInterested userInterested = new UserInterested();
+                            userInterested.UserId = user.UserID;
+                            userInterested.UserName = user.FullName;
+                            newsFeedDTO[i].UserInteresteds.Add(userInterested);
+                        }
+                    }
+                    if (newsFeedDTO[i].InterestedUserID!= null){
+                        User user = _dBContext.Users.Where(u => u.UserID.Equals(newsFeedDTO[i].InterestedUserID)).FirstOrDefault();
+                        newsFeedDTO[i].InterestedUserName = user.FullName;
+                    }
                     List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
                     List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
                     newsFeedDTO[i].CommentQuantity = countComments;
@@ -409,18 +425,6 @@ namespace CatDogLoverPlatform_Backend.Controllers
                     int countLike = _dBContext.NumberOfInteractions.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).Count();
                     List<Image> images = _dBContext.Images.Where(t => t.NewsFeedID.Equals(newsFeeds[i].NewsFeedID)).ToList();
                     List<ImageDTO> imageDTOs = FunctionConvert.ConvertListToList<ImageDTO, Image>(images);
-                    List<Interested> interesteds = await _dBContext.Interesteds.Where(t => t.NewsFeedID.Equals(paginateRequest.UserID)).ToListAsync();
-                    foreach(var item in interesteds)
-                    {
-                        User user = _dBContext.Users.Where(u => u.UserID.Equals(item.UserID)).FirstOrDefault();
-                        if (user != null)
-                        {
-                            UserInterested userInterested = new UserInterested();
-                            userInterested.UserId = user.UserID;
-                            userInterested.UserName = user.FullName;
-                            newsFeedDTO[i].UserInteresteds.Add(userInterested);
-                        }
-                    }
                     newsFeedDTO[i].LikeQuantity = countLike;
                     newsFeedDTO[i].CommentQuantity = countComments;
                     newsFeedDTO[i].ListImages = imageDTOs;
@@ -512,7 +516,7 @@ namespace CatDogLoverPlatform_Backend.Controllers
         {
             try
             {
-                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(s => s.NewsFeedID.Equals(confirmNewsFeedForSale.NewsFeedID).FirstOrDefault();
+                NewsFeed newsFeed = _dBContext.NewsFeeds.Where(s => s.NewsFeedID.Equals(confirmNewsFeedForSale.NewsFeedID)).FirstOrDefault();
                 newsFeed.InterestedUserID = confirmNewsFeedForSale.UserID;
                 newsFeed.Status = 4;
                 _dBContext.NewsFeeds.Update(newsFeed);

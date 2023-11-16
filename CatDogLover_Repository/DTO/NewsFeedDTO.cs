@@ -20,6 +20,5 @@ namespace CatDogLover_Repository.DTO
         public int LikeQuantity { get; set; }
         public List<ImageDTO> ListImages { get; set; }
 
-        public List<UserInterested> UserInteresteds { get; set; } = new List<UserInterested>();
     }
 }
